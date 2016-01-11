@@ -1,0 +1,59 @@
+conky.config = {
+	background = false,
+	out_to_console = true,
+	out_to_x = false,
+	max_text_width = 0,
+	own_window = false,
+	update_interval = 1,
+	total_run_times = 0,
+	short_units = true,
+	if_up_strictness = 'address',
+	use_spacer = 'right',
+	override_utf8_locale = false,
+	cpu_avg_samples = 2,
+	times_in_seconds = true
+};
+
+conky.text = [[
+[
+#keyboard
+{"full_text":"LANG:","color":"\#d64937","separator":"false","separator_block_width":2},
+{"full_text":"${exec xkblayout-state print "%s"}","color":"\#808080","separator":false,"separator_block_width":8},
+#Pacman
+{"full_text":"PKG:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${execi 600 checkupdates | wc -l}","color":"\#808080","separator":false,"separator_block_width":8},
+#Load AVG
+{"full_text":"LOAD:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${loadavg 1}","color":"\#808080","separator":false,"separator_block_width":8},
+#CPU
+{"full_text":"CPU:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${cpu cpu0}%","color":"\#808080","separator":false,"separator_block_width":8},
+#MEM
+{"full_text":"MEM:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${memperc}%","color":"\#808080","separator":false,"separator_block_width":8},
+#root free
+{"full_text":"DISK:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${fs_free /}","color":"\#808080","separator":false,"separator_block_width":8},
+#Kernel
+{"full_text":"KERN:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${kernel}","color":"\#808080","separator":false,"separator_block_width":8},
+#Uptime
+{"full_text":"UP:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${format_time $uptime "(\dd)\hh"}","color":"\#808080","separator":false,"separator_block_width":8},
+#Brighness
+{"full_text":"BRTN:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${exec xbacklight| awk '{printf("%d\n",$1 + 0.5)}'}%","color":"\#808080","separator":false,"separator_block_width":8},
+#Volume:
+{"full_text":"VOL:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${if_match "${execi 10 pulseaudio-ctl full-status|awk '{print $2}'}" != "yes"}${execi 5 pulseaudio-ctl current}${else}MUTED${endif}","color":"\#808080","separator":false,"separator_block_width":8},
+#Battery
+{"full_text":"BAT:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${battery_short} (${format_time $battery_time "\hh\mm"})","color":"\#808080","separator":false,"separator_block_width":8},
+#Date
+{"full_text":"DATE:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${time %d.%m.%y}","color":"\#808080","separator":false, "separator_block_width":8},
+#Time
+{"full_text":"TIME:","color":"\#d64937","separator":false,"separator_block_width":2},
+{"full_text":"${time %H:%M}","color":"\#808080","separator":false, "separator_block_width":8}
+],
+]];

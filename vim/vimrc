@@ -1,0 +1,98 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+
+" Plugins
+Plugin 'scrooloose/syntastic'
+Plugin 'kien/ctrlp.vim'
+
+Plugin 'Valloric/YouCompleteMe'
+
+"Bundle 'jlanzarotta/bufexplorer'
+Plugin 'flazz/vim-colorschemes'
+
+Plugin 'tpope/vim-commentary'
+
+" Airline
+Plugin 'bling/vim-airline'
+Plugin 'tpope/vim-fugitive'
+
+"Plugin 'tomasr/molokai'
+
+
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+
+" Plugins options
+let &t_Co=256
+set laststatus=2
+
+syntax on
+colorscheme jellybeans
+
+"airline
+let g:airline_powerline_fonts = 1
+let g:airline#extensions#tabline#enabled = 1
+
+"let g:airline#extensions#tabline#buffer_idx_mode = 1
+"nmap <leader>1 <Plug>AirlineSelectTab1
+"nmap <leader>2 <Plug>AirlineSelectTab2
+"nmap <leader>3 <Plug>AirlineSelectTab3
+"nmap <leader>4 <Plug>AirlineSelectTab4
+"nmap <leader>5 <Plug>AirlineSelectTab5
+"nmap <leader>6 <Plug>AirlineSelectTab6
+"nmap <leader>7 <Plug>AirlineSelectTab7
+"nmap <leader>8 <Plug>AirlineSelectTab8
+"nmap <leader>9 <Plug>AirlineSelectTab9
+
+
+"syntactic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 0
+let g:syntastic_check_on_wq = 0
+
+"let g:syntastic_error_symbol = "✗"
+"let g:syntastic_warning_symbol = "⚠"
+
+
+set mouse=a
+"set hidden
+
+"set modeline
+"set modelines=5
+"
+"setlocal commentstring=#%s
+"
+"autocmd FileType c,cpp,java,scala setlocal commentstring=//%s
+"autocmd FileType sh,ruby,python   setlocal commentstring=#%s
+"autocmd FileType conf,fstab       setlocal commentstring=#%s
+"autocmd FileType tex              setlocal commentstring=%%s
+"autocmd FileType mail             setlocal commentstring=>%s
+"autocmd FileType vim              setlocal commentstring="%s
+"
+"" Append modeline after last line in buffer.
+"" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
+"" files.
+"function! AppendModeline()
+"  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set %sai %ssi :",
+"        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no', &autoindent? '' : 'no', &smartindent? '': 'no')
+"  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
+"  call append(line("$"), l:modeline)
+"endfunction
+"nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
