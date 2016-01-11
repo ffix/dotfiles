@@ -41,6 +41,30 @@ set laststatus=2
 syntax on
 colorscheme jellybeans
 
+" indent
+set autoindent
+set smartindent
+set shiftwidth=4
+set expandtab
+set tabstop=4
+
+" backspace
+set bs=2
+
+" search
+set hlsearch
+set incsearch
+
+" disable timeout
+set ttimeoutlen=0
+
+" highlight chars
+set listchars=tab:··
+set list
+
+" map keys
+nmap ; :reg<cr>
+
 "airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
