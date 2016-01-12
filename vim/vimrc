@@ -16,10 +16,12 @@ Plugin 'kien/ctrlp.vim'
 
 Plugin 'Valloric/YouCompleteMe'
 
-"Bundle 'jlanzarotta/bufexplorer'
 Plugin 'flazz/vim-colorschemes'
+" Plugin 'tpope/vim-commentary'
+Plugin 'scrooloose/nerdcommenter'
 
-Plugin 'tpope/vim-commentary'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'jiangmiao/auto-pairs'
 
 " Airline
 Plugin 'bling/vim-airline'
@@ -66,8 +68,11 @@ set ttimeoutlen=0
 set number
 
 " highlight chars
-set listchars=tab:··
+set listchars=tab:▸▸,trail:¬,nbsp:.,extends:❯,precedes:❮
 set list
+
+" set <leader>
+let mapleader=","
 
 " map keys
 nmap ; :reg<cr>
@@ -75,6 +80,8 @@ nmap ; :reg<cr>
 "airline
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#show_buffers = 0
+let g:airline#extensions#tabline#tab_nr_type = 1
 
 "let g:airline#extensions#tabline#buffer_idx_mode = 1
 "nmap <leader>1 <Plug>AirlineSelectTab1
@@ -98,8 +105,6 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
-"let g:syntastic_error_symbol = "✗"
-"let g:syntastic_warning_symbol = "⚠"
 
 
 set mouse=a
@@ -108,6 +113,21 @@ set mouse=a
 " open vimrc
 nnoremap <leader>v :e  ~/.vimrc<CR>
 nnoremap <leader>V :tabnew  ~/.vimrc<CR>
+
+" use nab to switch between open windows
+nnoremap <Tab> <C-w>
+nnoremap <Tab><Tab> <C-w><C-w>
+"
+"make enter break and do newlines
+nnoremap <CR> O<Esc>j
+
+"make space in normal mode add space
+nnoremap <Space> i<Space><Esc>l
+
+" python tools
+vnoremap <leader>pp :! autopep8 --max-line-length 120 -<CR>
+nnoremap <leader>pp ggVG! autopep8 --max-line-length 120 -<CR>
+nnoremap <leader>pi ggVG! isort -e -<CR>
 
 "set hidden
 
