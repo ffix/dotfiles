@@ -60,6 +60,7 @@ set bs=2
 " search
 set hlsearch
 set incsearch
+noremap <F4> :set hlsearch! hlsearch?<CR>
 
 " disable timeout
 set ttimeoutlen=0
@@ -74,6 +75,8 @@ set list
 " set <leader>
 let mapleader=","
 
+" remove _ from keywords
+set iskeyword-=_
 " map keys
 nmap ; :reg<cr>
 
@@ -114,9 +117,14 @@ set mouse=a
 nnoremap <leader>v :e  ~/.vimrc<CR>
 nnoremap <leader>V :tabnew  ~/.vimrc<CR>
 
-" use nab to switch between open windows
+" use tab to switch between open windows
 nnoremap <Tab> <C-w>
 nnoremap <Tab><Tab> <C-w><C-w>
+
+" c-left/right
+nnoremap <C-Left> :tabprevious<CR>
+nnoremap <C-Right> :tabnext<CR>
+
 "
 "make enter break and do newlines
 nnoremap <CR> O<Esc>j
