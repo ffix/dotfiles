@@ -27,6 +27,8 @@ Plugin 'jiangmiao/auto-pairs'
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 
+Plugin 'rking/ag.vim'
+
 "Plugin 'tomasr/molokai'
 
 
@@ -57,9 +59,7 @@ set tabstop=4
 " backspace
 set bs=2
 
-" search
-set hlsearch
-set incsearch
+" hl search
 noremap <F4> :set hlsearch! hlsearch?<CR>
 
 " disable timeout
@@ -127,7 +127,7 @@ nnoremap <C-Right> :tabnext<CR>
 
 "
 "make enter break and do newlines
-nnoremap <CR> O<Esc>j
+nnoremap \ o<Esc>k
 
 "make space in normal mode add space
 nnoremap <Space> i<Space><Esc>l
