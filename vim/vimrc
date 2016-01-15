@@ -22,7 +22,7 @@ Plugin 'scrooloose/nerdcommenter'
 
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jiangmiao/auto-pairs'
-
+Plugin 'tpope/vim-surround'
 " Airline
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
@@ -127,15 +127,24 @@ nnoremap <C-Right> :tabnext<CR>
 
 "
 "make enter break and do newlines
-nnoremap \ o<Esc>k
+nnoremap <Bslash> o<Esc>k
+nnoremap <Bar> O<Esc>j
 
 "make space in normal mode add space
 nnoremap <Space> i<Space><Esc>l
 
-" python tools
-vnoremap <leader>pp :! autopep8 --max-line-length 120 -<CR>
-nnoremap <leader>pp ggVG! autopep8 --max-line-length 120 -<CR>
-nnoremap <leader>pi ggVG! isort -e -<CR>
+" General file runners for various languages
+function! LangRunner()
+  if(&ft=="python")
+    vnoremap <leader>pp :! autopep8 --max-line-length 120 -<CR>
+    nnoremap <leader>pp ggVG! autopep8 --max-line-length 120 -<CR>
+    nnoremap <leader>pi ggVG! isort -e -<CR>
+  elseif(&ft=="ruby")
+    "
+  endif
+endfunction
+
+au BufEnter * call LangRunner()
 
 "set hidden
 
