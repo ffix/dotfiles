@@ -49,8 +49,6 @@ colorscheme jellybeans
 
 
 " indent
-set autoindent
-set smartindent
 set shiftwidth=4
 set expandtab
 set smarttab
