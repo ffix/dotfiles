@@ -59,8 +59,12 @@ set tabstop=4
 " backspace
 set bs=2
 
-" hl search
-noremap <F4> :set hlsearch! hlsearch?<CR>
+" search
+set hlsearch
+
+" Clear highlighting on escape in normal mode
+nnoremap <esc> :noh<return><esc>
+nnoremap <esc>^[ <esc>^[
 
 " disable timeout
 set ttimeoutlen=0
