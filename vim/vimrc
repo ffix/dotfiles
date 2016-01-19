@@ -1,29 +1,30 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+set nocompatible              "be iMproved, required
+filetype off                  "required
 
-" set the runtime path to include Vundle and initialize
+"set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
+"alternatively, pass a path where Vundle should install plugins
 "call vundle#begin('~/some/path/here')
 
-" let Vundle manage Vundle, required
+"let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
 
-" Plugins
+"Plugins
 Plugin 'scrooloose/syntastic'
 Plugin 'kien/ctrlp.vim'
 
 Plugin 'Valloric/YouCompleteMe'
 
 Plugin 'flazz/vim-colorschemes'
-" Plugin 'tpope/vim-commentary'
+"Plugin 'tpope/vim-commentary'
 Plugin 'scrooloose/nerdcommenter'
 
 Plugin 'airblade/vim-gitgutter'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-surround'
-" Airline
+Plugin 'AndrewRadev/splitjoin.vim'
+"Airline
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 
@@ -33,12 +34,12 @@ Plugin 'rking/ag.vim'
 
 
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+"All of your Plugins must be added before the following line
+call vundle#end()            "required
+filetype plugin indent on    "required
 
 
-" Plugins options
+"Plugins options
 let &t_Co=256
 set laststatus=2
 
@@ -48,38 +49,38 @@ colorscheme jellybeans
 
 
 
-" indent
+"indent
 set shiftwidth=4
 set expandtab
 set smarttab
 set tabstop=4
 
-" backspace
+"backspace
 set bs=2
 
-" search
+"search
 set hlsearch
 
-" Clear highlighting on escape in normal mode
+"Clear highlighting on escape in normal mode
 nnoremap <esc> :noh<return><esc>
 nnoremap <esc>^[ <esc>^[
 
-" disable timeout
+"disable timeout
 set ttimeoutlen=0
 
-" line numbers
+"line numbers
 set number
 
-" highlight chars
+"highlight chars
 set listchars=tab:▸▸,trail:¬,nbsp:.,extends:❯,precedes:❮
 set list
 
-" set <leader>
+"set <leader>
 let mapleader=","
 
-" remove _ from keywords
+"remove _ from keywords
 set iskeyword-=_
-" map keys
+"map keys
 nmap ; :reg<cr>
 
 "airline
@@ -87,18 +88,6 @@ let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#tab_nr_type = 1
-
-"let g:airline#extensions#tabline#buffer_idx_mode = 1
-"nmap <leader>1 <Plug>AirlineSelectTab1
-"nmap <leader>2 <Plug>AirlineSelectTab2
-"nmap <leader>3 <Plug>AirlineSelectTab3
-"nmap <leader>4 <Plug>AirlineSelectTab4
-"nmap <leader>5 <Plug>AirlineSelectTab5
-"nmap <leader>6 <Plug>AirlineSelectTab6
-"nmap <leader>7 <Plug>AirlineSelectTab7
-"nmap <leader>8 <Plug>AirlineSelectTab8
-"nmap <leader>9 <Plug>AirlineSelectTab9
-
 
 "syntactic
 set statusline+=%#warningmsg#
@@ -110,65 +99,41 @@ let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
 
-
-
+"enable mouse
 set mouse=a
 
-
-" open vimrc
+"open vimrc
 nnoremap <leader>v :e  ~/.vimrc<CR>
 nnoremap <leader>V :tabnew  ~/.vimrc<CR>
 
-" use tab to switch between open windows
+"use tab to switch between open windows
 nnoremap <Tab> <C-w>
 nnoremap <Tab><Tab> <C-w><C-w>
 
-" c-left/right
+"c-left/right
 nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 
-"
 "make enter break and do newlines
 nnoremap <Bslash> o<Esc>k
 nnoremap <Bar> O<Esc>j
 
+"line break
+nnoremap K i<CR><Esc>
+
 "make space in normal mode add space
 nnoremap <Space> i<Space><Esc>l
 
-" General file runners for various languages
+"General file runners for various languages
 function! LangRunner()
   if(&ft=="python")
     vnoremap <leader>pp :! autopep8 --max-line-length 120 -<CR>
-    nnoremap <leader>pp ggVG! autopep8 --max-line-length 120 -<CR>
-    nnoremap <leader>pi ggVG! isort -e -<CR>
+    nnoremap <leader>pp :%! autopep8 --max-line-length 120 -<CR>
+    vnoremap <leader>pi :! isort -e -<CR>
+    nnoremap <leader>pi :%! isort -e -<CR>
   elseif(&ft=="ruby")
     "
   endif
 endfunction
 
 au BufEnter * call LangRunner()
-
-"set hidden
-
-"set modeline
-"set modelines=5
-"
-"setlocal commentstring=#%s
-"
-"autocmd FileType c,cpp,java,scala setlocal commentstring=//%s
-"autocmd FileType sh,ruby,python   setlocal commentstring=#%s
-"autocmd FileType conf,fstab       setlocal commentstring=#%s
-"autocmd FileType tex              setlocal commentstring=%%s
-"autocmd FileType mail             setlocal commentstring=>%s
-"autocmd FileType vim              setlocal commentstring="%s
-"
-"" Append modeline after last line in buffer.
-"" Use substitute() instead of printf() to handle '%%s' modeline in LaTeX
-"" files.
-"function! AppendModeline()
-"  let l:modeline = printf(" vim: set ts=%d sw=%d tw=%d %set %sai %ssi :",
-"        \ &tabstop, &shiftwidth, &textwidth, &expandtab ? '' : 'no', &autoindent? '' : 'no', &smartindent? '': 'no')
-"  let l:modeline = substitute(&commentstring, "%s", l:modeline, "")
-"  call append(line("$"), l:modeline)
-"endfunction
-"nnoremap <silent> <Leader>ml :call AppendModeline()<CR>
