@@ -30,6 +30,11 @@ Plugin 'tpope/vim-fugitive'
 
 Plugin 'rking/ag.vim'
 
+
+"Highlight
+Plugin 'digitaltoad/vim-jade'
+
+
 "Plugin 'tomasr/molokai'
 
 
@@ -78,8 +83,6 @@ set list
 "set <leader>
 let mapleader=","
 
-"remove _ from keywords
-set iskeyword-=_
 "map keys
 nmap ; :reg<cr>
 
@@ -123,6 +126,12 @@ nnoremap K i<CR><Esc>
 
 "make space in normal mode add space
 nnoremap <Space> i<Space><Esc>l
+
+":Ag on selected word
+nnoremap <leader>ag :Ag <C-R><C-W><CR>
+
+"MRU
+nnoremap <C-b> :CtrlPMRU<CR>
 
 "General file runners for various languages
 function! LangRunner()
