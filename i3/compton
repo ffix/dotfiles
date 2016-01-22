@@ -1,7 +1,8 @@
 backend = "glx";
 vsync = "opengl-swc";
 
-glx-copy-from-front = true;
-glx-swap-method = 2;
-xrender-sync = true;
-xrender-sync-fence = true;
+glx-no-stencil = true;
+glx-copy-from-front = false;
+glx-swap-method = 0;
+#xrender-sync = true;
+#xrender-sync-fence = true;
