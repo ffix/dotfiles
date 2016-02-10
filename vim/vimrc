@@ -8,6 +8,7 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 "let Vundle manage Vundle, required
+"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 Plugin 'VundleVim/Vundle.vim'
 
 "Plugins
@@ -30,6 +31,7 @@ Plugin 'tpope/vim-fugitive'
 
 Plugin 'rking/ag.vim'
 
+Plugin 'tpope/vim-repeat'
 
 "Highlight
 Plugin 'digitaltoad/vim-jade'
