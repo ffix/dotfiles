@@ -105,6 +105,12 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 0
 let g:syntastic_check_on_wq = 0
+let g:syntastic_aggregate_errors = 1
+
+let g:syntastic_error_symbol         = '✗'
+let g:syntastic_warning_symbol       = '⚠'
+let g:syntastic_style_error_symbol   = '✠'
+let g:syntastic_style_warning_symbol = '≈'
 
 "enable mouse
 set mouse=a
@@ -122,8 +128,11 @@ nnoremap <C-Left> :tabprevious<CR>
 nnoremap <C-Right> :tabnext<CR>
 
 "make enter break and do newlines
-nnoremap <Bslash> o<Esc>k
-nnoremap <Bar> O<Esc>j
+nnoremap <CR> O<Esc>j
+
+"copy/paste system clipboard
+nnoremap <Bslash> "+p
+vnoremap <Bslash> "+y
 
 "line break
 nnoremap K i<CR><Esc>
