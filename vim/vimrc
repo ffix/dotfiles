@@ -113,7 +113,7 @@ let g:syntastic_style_error_symbol   = '✠'
 let g:syntastic_style_warning_symbol = '≈'
 
 "enable mouse
-set mouse=a
+set mouse=nvc
 
 "open vimrc
 nnoremap <leader>v :e  ~/.vimrc<CR>
