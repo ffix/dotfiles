@@ -179,7 +179,7 @@ bindsym $mod+l exec --no-startup-id loginctl lock-session
 
 #switch lang
 #exec --no-startup-id setxkbmap -layout us,ru #-option grp:win_space_toggle
-bindsym $mod+space exec --no-startup-id xkblayout-state set +1
+#bindsym $mod+space exec --no-startup-id xkblayout-state set +1
 
 exec --no-startup-id feh --bg-scale /etc/archwall.png
 #exec --no-startup-id sh -c 'nm-applet & disown'
