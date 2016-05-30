@@ -1,3 +1,9 @@
+"todo:
+"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vi
+"mkdir ~/.vim/undo
+"cd ~/.vim/bundle/YouCompleteMe && ./install.py
+
+
 set nocompatible              "be iMproved, required
 filetype off                  "required
 
@@ -8,7 +14,6 @@ call vundle#begin()
 "call vundle#begin('~/some/path/here')
 
 "let Vundle manage Vundle, required
-"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 Plugin 'VundleVim/Vundle.vim'
 
 "Plugins
