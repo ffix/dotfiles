@@ -77,7 +77,7 @@ bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
 # toggle tiling / floating
-bindsym $mod+Shift+space floating toggle
+bindsym Control+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+Mod1+space focus mode_toggle
@@ -88,16 +88,16 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
-workspace 1 output HDMI-2
-workspace 2 output HDMI-2
-workspace 3 output HDMI-2
-workspace 4 output HDMI-2
-workspace 5 output HDMI-2
-workspace 6 output HDMI-2
-workspace 7 output HDMI-2
-workspace 8 output HDMI-2
-workspace 9 output HDMI-1
-workspace 10 output HDMI-3
+workspace 1 output HDMI2
+workspace 2 output HDMI2
+workspace 3 output HDMI2
+workspace 4 output HDMI2
+workspace 5 output HDMI2
+workspace 6 output HDMI2
+workspace 7 output HDMI2
+workspace 8 output HDMI2
+workspace 9 output HDMI1
+workspace 10 output HDMI3
 
 # switch to workspace
 bindsym $mod+1 workspace 1
