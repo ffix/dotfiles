@@ -1,5 +1,5 @@
 "todo:
-"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vi
+"git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 "mkdir ~/.vim/undo
 "cd ~/.vim/bundle/YouCompleteMe && ./install.py
 
@@ -154,6 +154,9 @@ nnoremap <C-b> :CtrlPMRU<CR>
 ":UndotreeToggle
 nnoremap <F5> :UndotreeToggle<cr>
 
+"YCM
+nnoremap <leader>g :YcmCompleter GoTo<CR>
+
 "Persistent undo
 set undofile                " Save undo's after file closes
 set undodir=$HOME/.vim/undo " where to save undo histories
@@ -167,6 +170,8 @@ function! LangRunner()
     nnoremap <leader>pp :%! autopep8 --max-line-length 120 -<CR>
     vnoremap <leader>pi :! isort -e -<CR>
     nnoremap <leader>pi :%! isort -e -<CR>
+    nnoremap <leader>d  oimport ipdb; ipdb.set_trace()<Esc>
+    nnoremap <leader>D  Oimport ipdb; ipdb.set_trace()<Esc>
   elseif(&ft=="ruby")
     "
   endif
