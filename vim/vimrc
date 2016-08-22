@@ -44,7 +44,7 @@ Plugin 'digitaltoad/vim-jade'
 "Undo tree
 Plugin 'mbbill/undotree'
 
-"Plugin 'tomasr/molokai'
+Plugin 'majutsushi/tagbar'
 
 
 
@@ -155,7 +155,10 @@ nnoremap <C-b> :CtrlPMRU<CR>
 nnoremap <F5> :UndotreeToggle<cr>
 
 "YCM
-nnoremap <leader>g :YcmCompleter GoTo<CR>
+map <F3> :YcmCompleter GoTo<CR>
+
+"tagbar
+nmap <F8> :TagbarToggle<CR>
 
 "Persistent undo
 set undofile                " Save undo's after file closes
