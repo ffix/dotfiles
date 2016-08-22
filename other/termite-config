@@ -4,6 +4,7 @@ visible_bell = true
 scrollback_lines = 10000
 font = Ubuntu Mono derivative Powerline 12
 browser = firefox
+clickable_url = false
 
 
 
