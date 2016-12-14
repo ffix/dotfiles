@@ -160,6 +160,9 @@ map <F3> :YcmCompleter GoTo<CR>
 "tagbar
 nmap <F8> :TagbarToggle<CR>
 
+"paste mode toggle
+set pastetoggle=<F2>
+
 "Persistent undo
 set undofile                " Save undo's after file closes
 set undodir=$HOME/.vim/undo " where to save undo histories
