@@ -30,11 +30,12 @@ Plugin 'airblade/vim-gitgutter'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-surround'
 Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'matze/vim-move'
 "Airline
 Plugin 'bling/vim-airline'
 Plugin 'tpope/vim-fugitive'
 
-Plugin 'rking/ag.vim'
+Plugin 'mileszs/ack.vim'
 
 Plugin 'tpope/vim-repeat'
 
@@ -145,8 +146,15 @@ nnoremap K i<CR><Esc>
 "make space in normal mode add space
 nnoremap <Space> i<Space><Esc>l
 
+"Ack
+
+if executable('ag')
+  let g:ackprg = 'ag --vimgrep'
+endif
+
 ":Ag on selected word
-nnoremap <leader>ag :Ag <C-R><C-W><CR>
+nnoremap <leader>ag :Ack <C-R><C-W><CR>
+nnoremap <leader>a :Ack <C-R><C-W><CR>
 
 "MRU
 nnoremap <C-b> :CtrlPMRU<CR>
