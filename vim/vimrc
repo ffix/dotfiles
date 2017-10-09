@@ -17,8 +17,10 @@ function! BuildYCM(info)
 endfunction
 
 
-if has("patch-7.4-1579") || has("nvim")
-  Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+if has("python") || has("python3")
+  if has("patch-7.4-1579") || has("nvim")
+    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+  endif
 endif
 
 Plug 'neomake/neomake'
