@@ -149,8 +149,18 @@ nnoremap <Tab> <C-w>
 nnoremap <Tab><Tab> <C-w><C-w>
 
 "c-left/right
-nnoremap <C-Left> :tabprevious<CR>
-nnoremap <C-Right> :tabnext<CR>
+"nnoremap <C-Left> :tabprevious<CR>
+"nnoremap <C-Right> :tabnext<CR>
+
+nmap <silent> <C-Up> :wincmd k<CR>
+nmap <silent> <C-Down> :wincmd j<CR>
+nmap <silent> <C-Left> :wincmd h<CR>
+nmap <silent> <C-Right> :wincmd l<CR>
+
+nmap <silent> <C-S-Up> :wincmd +<CR>
+nmap <silent> <C-S-Down> :wincmd -<CR>
+nmap <silent> <C-S-Left> :wincmd <<CR>
+nmap <silent> <C-S-Right> :wincmd ><CR>
 
 "make enter break and do newlines
 nnoremap <CR> O<Esc>j
