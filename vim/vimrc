@@ -6,22 +6,36 @@
 
 call plug#begin()
 
-function! BuildYCM(info)
-  " info is a dictionary with 3 fields
-  " - name:   name of the plugin
-  " - status: 'installed', 'updated', or 'unchanged'
-  " - force:  set on PlugInstall! or PlugUpdate!
-  if a:info.status == 'installed' || a:info.force
-    !./install.py
-  endif
-endfunction
+"function! BuildYCM(info)
+"  " info is a dictionary with 3 fields
+"  " - name:   name of the plugin
+"  " - status: 'installed', 'updated', or 'unchanged'
+"  " - force:  set on PlugInstall! or PlugUpdate!
+"  if a:info.status == 'installed' || a:info.force
+"    !./install.py
+"  endif
+"endfunction
 
 
-if has("python") || has("python3")
-  if has("patch-7.4-1579") || has("nvim")
-    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-  endif
+"if has("python") || has("python3")
+"  if has("patch-7.4-1579") || has("nvim")
+"    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
+"  endif
+"endif
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
 endif
+
+Plug 'zchee/deoplete-jedi'
+
+
+
+Plug 'davidhalter/jedi-vim'
+
 
 Plug 'neomake/neomake'
 Plug 'alfredodeza/coveragepy.vim'
@@ -57,7 +71,34 @@ Plug 'mhinz/vim-startify'
 
 Plug 'iCyMind/NeoSolarized'
 Plug 'morhetz/gruvbox'
+
+"cyrillic commands support
+"Plug 'lyokha/vim-xkbswitch'
+"
+" pandoc
+" Plug 'vim-pandoc/vim-pandoc'
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
 call plug#end()
+
+let g:python_host_prog = '/usr/bin/python2'
+let g:python3_host_prog = '/usr/bin/python3'
+
+let g:deoplete#enable_at_startup = 1
+
+inoremap <silent><expr> <TAB>
+\ pumvisible() ? "\<C-n>" :
+\ <SID>check_back_space() ? "\<TAB>" :
+\ deoplete#mappings#manual_complete()
+function! s:check_back_space() abort "{{{
+let col = col('.') - 1
+return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+
+let g:jedi#auto_vim_configuration = 0
+let g:jedi#use_tabs_not_buffers = 0
+let g:jedi#completions_enabled = 0
+let g:jedi#smart_auto_mappings = 0
 
 
 "Credit joshdick
@@ -100,6 +141,8 @@ set bs=2
 
 "search
 set hlsearch
+" search for visually hightlighted text
+vnoremap <c-f> y<ESC>/<c-r>"<CR>
 
 "Clear highlighting on escape in normal mode
 nnoremap <esc> :noh<return><esc>
@@ -214,12 +257,12 @@ function! LangRunner()
   if(&ft=="python")
     vnoremap <leader>pp :! autopep8 --max-line-length 120 -<CR>
     nnoremap <leader>pp :%! autopep8 --max-line-length 120 -<CR>
-    vnoremap <leader>pi :! isort -e -<CR>
-    nnoremap <leader>pi :%! isort -e -<CR>
+    vnoremap <leader>pi :! isort -m3 -tc -e -<CR>
+    nnoremap <leader>pi :%! isort -m3 -tc -e -<CR>
     vnoremap <leader>py :! yapf --style=pep8<CR>
     nnoremap <leader>py :%! yapf --style=pep8<CR>
-    nnoremap <leader>d  oimport ipdb; ipdb.set_trace()<Esc>
-    nnoremap <leader>D  Oimport ipdb; ipdb.set_trace()<Esc>
+    nnoremap <leader>z  oimport ipdb; ipdb.set_trace()<Esc>
+    nnoremap <leader>Z  Oimport ipdb; ipdb.set_trace()<Esc>
   elseif(&ft=="ruby")
     "
   endif
