@@ -6,44 +6,25 @@
 
 call plug#begin()
 
-"function! BuildYCM(info)
-"  " info is a dictionary with 3 fields
-"  " - name:   name of the plugin
-"  " - status: 'installed', 'updated', or 'unchanged'
-"  " - force:  set on PlugInstall! or PlugUpdate!
-"  if a:info.status == 'installed' || a:info.force
-"    !./install.py
-"  endif
-"endfunction
+if has('nvim') || has('channel') && has('job') && has('patch-7-4-2260')
+  if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+  endif
+  Plug 'zchee/deoplete-jedi'
 
-
-"if has("python") || has("python3")
-"  if has("patch-7.4-1579") || has("nvim")
-"    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-"  endif
-"endif
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+  Plug 'neomake/neomake'
 endif
 
-Plug 'zchee/deoplete-jedi'
-
-
-
 Plug 'davidhalter/jedi-vim'
-
-
-Plug 'neomake/neomake'
 Plug 'alfredodeza/coveragepy.vim'
 
 Plug 'kien/ctrlp.vim'
 
 Plug 'flazz/vim-colorschemes'
-"Plugin 'tpope/vim-commentary'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'airblade/vim-gitgutter'
@@ -72,11 +53,6 @@ Plug 'mhinz/vim-startify'
 Plug 'iCyMind/NeoSolarized'
 Plug 'morhetz/gruvbox'
 
-"cyrillic commands support
-"Plug 'lyokha/vim-xkbswitch'
-"
-" pandoc
-" Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
 call plug#end()
@@ -178,17 +154,9 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 "neomake
-call neomake#configure#automake('nw', 750)
-"call neomake#configure#automake({
-"\ 'TextChanged': {},
-"\ 'InsertLeave': {},
-"\ 'BufWritePost': {'delay': 0},
-"\ 'BufWinEnter': {},
-"\ }, 500)
-
-"autocmd! BufWritePost * Neomake
-"autocmd! BufUnload * ccl | lcl
-"
+if exists("*neomake#configure#automake")
+  call neomake#configure#automake('nw', 750)
+endif
 let g:neomake_open_list=2
 
 "enable mouse
@@ -215,9 +183,6 @@ nmap <silent> <C-S-Up> :wincmd +<CR>
 nmap <silent> <C-S-Down> :wincmd -<CR>
 nmap <silent> <C-S-Left> :wincmd <<CR>
 nmap <silent> <C-S-Right> :wincmd ><CR>
-
-"make enter break and do newlines
-"nnoremap <CR> O<Esc>j
 
 "copy/paste system clipboard
 nnoremap <Bslash> "+p
