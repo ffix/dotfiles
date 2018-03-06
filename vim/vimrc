@@ -100,6 +100,8 @@ let g:jedi#use_tabs_not_buffers = 0
 let g:jedi#completions_enabled = 0
 let g:jedi#smart_auto_mappings = 0
 
+let g:jedi#goto_command = "<leader>g"
+let g:jedi#goto_assignments_command = "<leader>gg"
 
 "Credit joshdick
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -176,8 +178,17 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 "neomake
-autocmd! BufWritePost * Neomake
-autocmd! BufUnload * ccl | lcl
+call neomake#configure#automake('nw', 750)
+"call neomake#configure#automake({
+"\ 'TextChanged': {},
+"\ 'InsertLeave': {},
+"\ 'BufWritePost': {'delay': 0},
+"\ 'BufWinEnter': {},
+"\ }, 500)
+
+"autocmd! BufWritePost * Neomake
+"autocmd! BufUnload * ccl | lcl
+"
 let g:neomake_open_list=2
 
 "enable mouse
@@ -261,8 +272,8 @@ function! LangRunner()
     nnoremap <leader>pi :%! isort -m3 -tc -e -<CR>
     vnoremap <leader>py :! yapf --style=pep8<CR>
     nnoremap <leader>py :%! yapf --style=pep8<CR>
-    nnoremap <leader>z  oimport ipdb; ipdb.set_trace()<Esc>
-    nnoremap <leader>Z  Oimport ipdb; ipdb.set_trace()<Esc>
+    nnoremap <leader>d  oimport pdb; pdb.set_trace()<Esc>
+    nnoremap <leader>D  Oimport pdb; pdb.set_trace()<Esc>
   elseif(&ft=="ruby")
     "
   endif
