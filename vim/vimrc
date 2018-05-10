@@ -3,6 +3,12 @@
 " or
 " curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
 "     https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"
+
+let s:nvim = has('nvim')
+let s:vim8 = has('job') && has('patch-8.0.0027')
+let s:newvim = s:nvim || s:vim8
+let s:oldvim = !s:nvim && !s:vim8
 
 call plug#begin()
 
@@ -22,15 +28,20 @@ call plug#begin()
 "    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 "  endif
 "endif
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
+if s:newvim
+  if s:nvim
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  else
+    Plug 'Shougo/deoplete.nvim'
+    Plug 'roxma/nvim-yarp'
+    Plug 'roxma/vim-hug-neovim-rpc'
+  endif
+  Plug 'zchee/deoplete-jedi'
+  let s:completer = 'deoplete'
+elseif has("lua")
+  Plug 'Shougo/neocomplete.vim'
+  let s:completer = 'neocomplete'
 endif
-
-Plug 'zchee/deoplete-jedi'
 
 
 
@@ -84,16 +95,30 @@ call plug#end()
 let g:python_host_prog = '/usr/bin/python2'
 let g:python3_host_prog = '/usr/bin/python3'
 
-let g:deoplete#enable_at_startup = 1
+if exists('s:completer')
+  if s:completer == "deoplete"
+    let g:deoplete#enable_at_startup = 1
 
-inoremap <silent><expr> <TAB>
-\ pumvisible() ? "\<C-n>" :
-\ <SID>check_back_space() ? "\<TAB>" :
-\ deoplete#mappings#manual_complete()
-function! s:check_back_space() abort "{{{
-let col = col('.') - 1
-return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
+    inoremap <silent><expr> <TAB>
+    \ pumvisible() ? "\<C-n>" :
+    \ <SID>check_back_space() ? "\<TAB>" :
+    \ deoplete#mappings#manual_complete()
+    function! s:check_back_space() abort "{{{
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction"}}}
+
+  elseif s:completer == "neocomplete"
+    let g:neocomplete#enable_at_startup = 1
+    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+    autocmd FileType python setlocal omnifunc=jedi#completions
+    if !exists('g:neocomplete#force_omni_input_patterns')
+      let g:neocomplete#force_omni_input_patterns = {}
+    endif
+    let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
+  endif
+endif
 
 let g:jedi#auto_vim_configuration = 0
 let g:jedi#use_tabs_not_buffers = 0
@@ -178,7 +203,11 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 
 "neomake
-call neomake#configure#automake('nw', 750)
+if s:newvim
+  call neomake#configure#automake('nw', 750)
+else
+  call neomake#configure#automake('w')
+endif
 "call neomake#configure#automake({
 "\ 'TextChanged': {},
 "\ 'InsertLeave': {},
@@ -195,8 +224,13 @@ let g:neomake_open_list=2
 set mouse=nvc
 
 "open vimrc
-nnoremap <leader>v :e  ~/.config/nvim/init.vim<CR>
-nnoremap <leader>V :tabnew  ~/.config/nvim/init.vim<CR>
+if s:nvim
+  nnoremap <leader>v :e  ~/.config/nvim/init.vim<CR>
+  nnoremap <leader>V :tabnew  ~/.config/nvim/init.vim<CR>
+else
+  nnoremap <leader>v :e  ~/.vimrc<CR>
+  nnoremap <leader>V :tabnew  ~/.vimrc<CR>
+endif
 
 "use tab to switch between open windows
 nnoremap <Tab> <C-w>
