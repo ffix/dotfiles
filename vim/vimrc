@@ -43,18 +43,13 @@ elseif has("lua")
   let s:completer = 'neocomplete'
 endif
 
-
-
 Plug 'davidhalter/jedi-vim'
-
-
 Plug 'neomake/neomake'
 Plug 'alfredodeza/coveragepy.vim'
 
 Plug 'kien/ctrlp.vim'
 
 Plug 'flazz/vim-colorschemes'
-"Plugin 'tpope/vim-commentary'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'airblade/vim-gitgutter'
@@ -83,11 +78,6 @@ Plug 'mhinz/vim-startify'
 Plug 'iCyMind/NeoSolarized'
 Plug 'morhetz/gruvbox'
 
-"cyrillic commands support
-"Plug 'lyokha/vim-xkbswitch'
-"
-" pandoc
-" Plug 'vim-pandoc/vim-pandoc'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 
 call plug#end()
@@ -208,16 +198,6 @@ if s:newvim
 else
   call neomake#configure#automake('w')
 endif
-"call neomake#configure#automake({
-"\ 'TextChanged': {},
-"\ 'InsertLeave': {},
-"\ 'BufWritePost': {'delay': 0},
-"\ 'BufWinEnter': {},
-"\ }, 500)
-
-"autocmd! BufWritePost * Neomake
-"autocmd! BufUnload * ccl | lcl
-"
 let g:neomake_open_list=2
 
 "enable mouse
