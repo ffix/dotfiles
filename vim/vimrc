@@ -10,6 +10,8 @@ let s:vim8 = has('job') && has('patch-8.0.0027')
 let s:newvim = s:nvim || s:vim8
 let s:oldvim = !s:nvim && !s:vim8
 
+let s:oni = exists("g:gui_oni")
+
 call plug#begin()
 
 "function! BuildYCM(info)
@@ -28,37 +30,45 @@ call plug#begin()
 "    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
 "  endif
 "endif
-if s:newvim
-  if s:nvim
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-  else
-    Plug 'Shougo/deoplete.nvim'
-    Plug 'roxma/nvim-yarp'
-    Plug 'roxma/vim-hug-neovim-rpc'
+if !s:oni
+  if s:newvim
+    if s:nvim
+      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+      Plug 'Shougo/deoplete.nvim'
+      Plug 'roxma/nvim-yarp'
+      Plug 'roxma/vim-hug-neovim-rpc'
+    endif
+    Plug 'zchee/deoplete-jedi'
+    let s:completer = 'deoplete'
+  elseif has("lua")
+    Plug 'Shougo/neocomplete.vim'
+    let s:completer = 'neocomplete'
   endif
-  Plug 'zchee/deoplete-jedi'
-  let s:completer = 'deoplete'
-elseif has("lua")
-  Plug 'Shougo/neocomplete.vim'
-  let s:completer = 'neocomplete'
+
+  Plug 'davidhalter/jedi-vim'
+  Plug 'neomake/neomake'
+  Plug 'alfredodeza/coveragepy.vim'
+  
+  Plug 'kien/ctrlp.vim'
+
+  Plug 'jiangmiao/auto-pairs'
+  Plug 'tpope/vim-surround'
+
+  "Airline
+  Plug 'bling/vim-airline'
+
+  Plug 'morhetz/gruvbox'
 endif
 
-Plug 'davidhalter/jedi-vim'
-Plug 'neomake/neomake'
-Plug 'alfredodeza/coveragepy.vim'
-
-Plug 'kien/ctrlp.vim'
 
 Plug 'flazz/vim-colorschemes'
 Plug 'scrooloose/nerdcommenter'
 
 Plug 'airblade/vim-gitgutter'
-Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-surround'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'matze/vim-move'
-"Airline
-Plug 'bling/vim-airline'
+
 Plug 'tpope/vim-fugitive'
 
 Plug 'mileszs/ack.vim'
@@ -75,10 +85,9 @@ Plug 'majutsushi/tagbar'
 
 Plug 'mhinz/vim-startify'
 
-Plug 'iCyMind/NeoSolarized'
-Plug 'morhetz/gruvbox'
 
 Plug 'vim-pandoc/vim-pandoc-syntax'
+Plug 'tshirtman/vim-cython'
 
 call plug#end()
 
@@ -138,13 +147,15 @@ endif
 
 set laststatus=2
 
-" TODO: add more terms
-if $TERM == 'xterm-termite'
-  let g:gruvbox_italic=1
-endif
+if !s:oni
+  " TODO: add more terms
+  if $TERM == 'xterm-termite' || $TERM_REAL == 'alacritty'
+    let g:gruvbox_italic=1
+  endif
 
-colorscheme gruvbox
-set background=dark
+  colorscheme gruvbox
+  set background=dark
+endif
 
 
 "indent
@@ -187,18 +198,20 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#show_buffers = 0
 let g:airline#extensions#tabline#tab_nr_type = 1
 
-"syntactic
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+""syntactic
+"set statusline+=%#warningmsg#
+"set statusline+=%{SyntasticStatuslineFlag()}
+"set statusline+=%*
 
-"neomake
-if s:newvim
-  call neomake#configure#automake('nw', 750)
-else
-  call neomake#configure#automake('w')
+if !s:oni
+  "neomake
+  if s:newvim
+    call neomake#configure#automake('nw', 750)
+  else
+    call neomake#configure#automake('w')
+  endif
+  let g:neomake_open_list=2
 endif
-let g:neomake_open_list=2
 
 "enable mouse
 set mouse=nvc
@@ -297,6 +310,10 @@ au BufEnter * call LangRunner()
 
 " spell
 set spell spelllang=en_us,ru
+
+" disable entering Ex mode
+map q: <Nop>
+nnoremap Q <nop>
 
 " qwerty-йцукен partial suppory
 map ё `
