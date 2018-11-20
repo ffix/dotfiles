@@ -33,6 +33,7 @@ endif
 
 Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
+Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'mbbill/undotree'
@@ -205,9 +206,15 @@ vnoremap <Bslash> "+y
 "make space in normal mode add space
 nnoremap <Space> i<Space><Esc>l
 
-"MRU
+"fzf
 nnoremap <C-b> :History<CR>
-nnoremap <C-p> :GFiles<CR>
+nnoremap <C-p> :Files<CR>
+
+if executable('rg')
+    let $FZF_DEFAULT_COMMAND='rg --files'
+elseif executable('ag')
+    let $FZF_DEFAULT_COMMAND='ag -g ""'
+endif
 
 ":UndotreeToggle
 nnoremap <F6> :UndotreeToggle<cr>
