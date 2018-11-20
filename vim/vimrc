@@ -8,84 +8,36 @@
 let s:nvim = has('nvim')
 let s:vim8 = has('job') && has('patch-8.0.0027')
 let s:newvim = s:nvim || s:vim8
-let s:oldvim = !s:nvim && !s:vim8
 
 let s:oni = exists("g:gui_oni")
 
 call plug#begin()
 
-"function! BuildYCM(info)
-"  " info is a dictionary with 3 fields
-"  " - name:   name of the plugin
-"  " - status: 'installed', 'updated', or 'unchanged'
-"  " - force:  set on PlugInstall! or PlugUpdate!
-"  if a:info.status == 'installed' || a:info.force
-"    !./install.py
-"  endif
-"endfunction
-
-
-"if has("python") || has("python3")
-"  if has("patch-7.4-1579") || has("nvim")
-"    Plug 'Valloric/YouCompleteMe', { 'do': function('BuildYCM') }
-"  endif
-"endif
 if !s:oni
   if s:newvim
-    if s:nvim
-      Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-    else
-      Plug 'Shougo/deoplete.nvim'
-      Plug 'roxma/nvim-yarp'
-      Plug 'roxma/vim-hug-neovim-rpc'
-    endif
-    Plug 'zchee/deoplete-jedi'
+    Plug 'autozimu/LanguageClient-neovim', {
+        \ 'branch': 'next',
+        \ 'do': 'bash install.sh',
+        \ }
+
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
     let s:completer = 'deoplete'
-  elseif has("lua")
-    Plug 'Shougo/neocomplete.vim'
-    let s:completer = 'neocomplete'
   endif
-
-  Plug 'davidhalter/jedi-vim'
-  Plug 'neomake/neomake'
-  Plug 'alfredodeza/coveragepy.vim'
-  
-  Plug 'kien/ctrlp.vim'
-
+  Plug 'junegunn/fzf.vim'
   Plug 'jiangmiao/auto-pairs'
   Plug 'tpope/vim-surround'
-
-  "Airline
-  Plug 'bling/vim-airline'
-
+  Plug 'itchyny/lightline.vim'
   Plug 'morhetz/gruvbox'
 endif
 
 
-Plug 'flazz/vim-colorschemes'
-Plug 'scrooloose/nerdcommenter'
-
+Plug 'tpope/vim-commentary'
 Plug 'airblade/vim-gitgutter'
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'matze/vim-move'
-
 Plug 'tpope/vim-fugitive'
-
-Plug 'mileszs/ack.vim'
-
 Plug 'tpope/vim-repeat'
-
-"Highlight
-Plug 'digitaltoad/vim-jade'
-
-"Undo tree
 Plug 'mbbill/undotree'
-
 Plug 'majutsushi/tagbar'
-
-Plug 'mhinz/vim-startify'
-
-
+Plug 'editorconfig/editorconfig-vim'
 Plug 'vim-pandoc/vim-pandoc-syntax'
 Plug 'tshirtman/vim-cython'
 
@@ -93,6 +45,27 @@ call plug#end()
 
 let g:python_host_prog = '/usr/bin/python2'
 let g:python3_host_prog = '/usr/bin/python3'
+
+if !s:oni
+    " Required for operations modifying multiple buffers like rename.
+    set hidden
+
+    let g:LanguageClient_serverCommands = {
+        \ 'python': ['/usr/bin/pyls'],
+        \ 'cpp': ['/usr/bin/ccls'],
+        \ }
+
+    nnoremap <F5> :call LanguageClient_contextMenu()<CR>
+    " Or map each action separately
+    nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> <F3> :call LanguageClient#textDocument_rename()<CR>
+
+    " Always draw sign column. Prevent buffer moving when adding/deleting sign.
+    set signcolumn=yes
+endif
+
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 if exists('s:completer')
   if s:completer == "deoplete"
@@ -106,26 +79,8 @@ if exists('s:completer')
     let col = col('.') - 1
     return !col || getline('.')[col - 1]  =~ '\s'
     endfunction"}}}
-
-  elseif s:completer == "neocomplete"
-    let g:neocomplete#enable_at_startup = 1
-    inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-
-    autocmd FileType python setlocal omnifunc=jedi#completions
-    if !exists('g:neocomplete#force_omni_input_patterns')
-      let g:neocomplete#force_omni_input_patterns = {}
-    endif
-    let g:neocomplete#force_omni_input_patterns.python = '\%([^. \t]\.\|^\s*@\|^\s*from\s.\+import \|^\s*from \|^\s*import \)\w*'
   endif
 endif
-
-let g:jedi#auto_vim_configuration = 0
-let g:jedi#use_tabs_not_buffers = 0
-let g:jedi#completions_enabled = 0
-let g:jedi#smart_auto_mappings = 0
-
-let g:jedi#goto_command = "<leader>g"
-let g:jedi#goto_assignments_command = "<leader>gg"
 
 "Credit joshdick
 "Use 24-bit (true-color) mode in Vim/Neovim when outside tmux.
@@ -144,9 +99,6 @@ if (empty($TMUX))
   endif
 endif
 
-
-set laststatus=2
-
 if !s:oni
   " TODO: add more terms
   if $TERM == 'xterm-termite' || $TERM_REAL == 'alacritty'
@@ -155,6 +107,34 @@ if !s:oni
 
   colorscheme gruvbox
   set background=dark
+
+  let g:lightline = {
+  \    'colorscheme': 'gruvbox',
+  \    'active': {
+  \      'left':[ [ 'mode', 'paste'  ],
+  \               [ 'gitbranch', 'readonly', 'filename', 'modified'  ]
+  \      ]
+  \    },
+  \      'component': {
+  \        'lineinfo': ' %3l:%-2v',
+  \      },
+  \    'component_function': {
+  \      'gitbranch': 'fugitive#head',
+  \    },
+  \    'separator': {
+  \      'left': '', 'right': ''
+  \    },
+  \    'subseparator': {
+  \      'left': '', 'right': ''
+  \    },
+  \    'tabline' : {
+  \        'left': [ ['tabs'] ],
+  \        'right': [ ['close'] ]
+  \    }
+  \}
+  set laststatus=2
+  set showtabline=2
+  set guioptions-=e
 endif
 
 
@@ -192,27 +172,6 @@ let mapleader=","
 "map keys
 nmap ; :reg<cr>
 
-"airline
-let g:airline_powerline_fonts = 1
-let g:airline#extensions#tabline#enabled = 1
-let g:airline#extensions#tabline#show_buffers = 0
-let g:airline#extensions#tabline#tab_nr_type = 1
-
-""syntactic
-"set statusline+=%#warningmsg#
-"set statusline+=%{SyntasticStatuslineFlag()}
-"set statusline+=%*
-
-if !s:oni
-  "neomake
-  if s:newvim
-    call neomake#configure#automake('nw', 750)
-  else
-    call neomake#configure#automake('w')
-  endif
-  let g:neomake_open_list=2
-endif
-
 "enable mouse
 set mouse=nvc
 
@@ -229,10 +188,6 @@ endif
 nnoremap <Tab> <C-w>
 nnoremap <Tab><Tab> <C-w><C-w>
 
-"c-left/right
-"nnoremap <C-Left> :tabprevious<CR>
-"nnoremap <C-Right> :tabnext<CR>
-
 nmap <silent> <C-Up> :wincmd k<CR>
 nmap <silent> <C-Down> :wincmd j<CR>
 nmap <silent> <C-Left> :wincmd h<CR>
@@ -243,40 +198,19 @@ nmap <silent> <C-S-Down> :wincmd -<CR>
 nmap <silent> <C-S-Left> :wincmd <<CR>
 nmap <silent> <C-S-Right> :wincmd ><CR>
 
-"make enter break and do newlines
-"nnoremap <CR> O<Esc>j
-
 "copy/paste system clipboard
 nnoremap <Bslash> "+p
 vnoremap <Bslash> "+y
 
-"line break
-nnoremap K i<CR><Esc>
-
 "make space in normal mode add space
 nnoremap <Space> i<Space><Esc>l
 
-"Ack
-
-if executable('ag')
-  let g:ackprg = 'ag --vimgrep'
-endif
-
-":Ag on selected word
-nnoremap <leader>ag :Ack <C-R><C-W><CR>
-nnoremap <leader>a :Ack <C-R><C-W><CR>
-
 "MRU
-nnoremap <C-b> :CtrlPMRU<CR>
+nnoremap <C-b> :History<CR>
+nnoremap <C-p> :GFiles<CR>
 
 ":UndotreeToggle
 nnoremap <F6> :UndotreeToggle<cr>
-
-"YCM
-map <F3> :YcmCompleter GoTo<CR>
-map <F4> :YcmCompleter GoToReferences<CR>
-map <F5> :YcmCompleter GetDoc<CR>
-let g:ycm_autoclose_preview_window_after_insertion = 1
 
 "tagbar
 nmap <F8> :TagbarToggle<CR>
